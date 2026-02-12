@@ -1,4 +1,4 @@
-# Burn Cheese Project
+# Burnt Cheese Project
 
 ## Team Name: Burn Cheese
 
