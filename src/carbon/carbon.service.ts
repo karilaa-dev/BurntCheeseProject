@@ -93,7 +93,7 @@ export class CarbonService {
         const carbon = await this.getAvgCarbonIntensity(location.latitude, location.longitude)
 
         return {
-            city, 
+            city: location.city, 
             latitude: location.latitude,
             longitude: location.longitude,
             carbonIntensity: carbon
