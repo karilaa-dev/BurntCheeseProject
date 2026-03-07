@@ -34,10 +34,70 @@ export class CarbonService {
                 latitude: location.lat,
                 longitude: location.lon
             }
-        } catch (error) {
-            console.error('Error fetching city data:', error.message)
-        }
 
+        } catch (error) {
+            if (error instanceof Error) {
+            console.error('Error fetching city data:', error.message);
+        }
+        throw error;
+        }
+    }
+
+
+    async getAvgCarbonIntensity(lat: string, lon: string) {
+
+        try{
+            const apiKey = this.configService.get<string>('ELECTRICITYMAPS_API_KEY')
+
+            if (!apiKey) {
+                throw new Error('ELECTRICITYMAPS_API_KEY is missing from .env');
+            }
+
+            const url = `https://api.electricitymaps.com/v3/carbon-intensity/forecast?lat=${lat}&lon=${lon}`
+
+            const response = await firstValueFrom(
+                this.httpsService.get(url, {
+                    headers: {
+                        'auth-token': apiKey,
+                    }
+                })
+            )
+
+            // Calculate the avg carbon intensity
+            const forecastData = response.data.forecast;
+
+            const carbonIntensity = forecastData.map(item => item.carbonIntensity);
+
+            let total = 0;
+
+            for (const item of carbonIntensity) {
+                total += item;
+            }
+
+            const avg = total/carbonIntensity.length
+
+            return avg;
+
+        } catch (error) {
+            if (error instanceof Error) {
+                console.error('Error fetching carbon data:', error.message)
+            }
+            throw error;
+        }
+    }
+
+    async getCarbonData(city: string) {
+
+        const location = await this.getCoordinates(city)
+
+        const carbon = await this.getAvgCarbonIntensity(location.latitude, location.longitude)
+
+        return {
+            city, 
+            latitude: location.latitude,
+            longitude: location.longitude,
+            carbonIntensity: carbon
+        }
     }
 
 }

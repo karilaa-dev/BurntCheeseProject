@@ -10,4 +10,9 @@ export class CarbonController {
     async getCoords(@Query('city') city: string) {
         return this.carbonService.getCoordinates(city);
     }
+
+    @Get('carbonIntensityData')
+    async getCarbonIntensityData(@Query('city') city: string) {
+        return this.carbonService.getCarbonData(city);
+    }
 }
