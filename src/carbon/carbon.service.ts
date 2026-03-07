@@ -12,19 +12,32 @@ export class CarbonService {
     
 
     async getCoordinates(city: string) {
-        const apiKey = this.configService.get<string>('GEOMAPS_API_KEY');
+        try{
+            const apiKey = this.configService.get<string>('GEOMAPS_API_KEY');
 
-        const response = await firstValueFrom(
-            this.httpsService.get(`https://geocode.maps.co/search?q=${city}&api_key=${apiKey}`)
-        )
+            if (!apiKey) {
+                throw new Error('GEOMAPS_API_KEY is missing from .env');
+            }
 
-        const location = response.data[0]
+            const response = await firstValueFrom(
+                this.httpsService.get(`https://geocode.maps.co/search?q=${city}&api_key=${apiKey}`)
+            )
 
-        return {
-            city: location.display_name,
-            latitude: location.lat,
-            longitude: location.lon
+            if (!response.data || response.data.length === 0) {
+            throw new Error(`City "${city}" not found`);
+            }
+
+            const location = response.data[0]
+
+            return {
+                city: location.display_name,
+                latitude: location.lat,
+                longitude: location.lon
+            }
+        } catch (error) {
+            console.error('Error fetching city data:', error.message)
         }
+
     }
 
 }
