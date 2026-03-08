@@ -5,9 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
-    <h1 class="text-3xl font-bold text-blue-600">TEMPLATE HTML</h1>
-    <p>test lol</p>
+    <nav class="flex justify-between p-4">
+        <div class="flex gap-3">
+            <a href="/">Homepage</a>
+            <a href="/about">About</a>
+        </div>
+        <h1 class="text-lg nav-title">Some Emissions</h1>
+        <form action="">
+            <input type="text" placeholder="Enter an American city..." class="bg-slate-300 placeholder-black p-2 rounded-xl">
+        </form>
+    </nav>
+    <div class="flex flex-col items-center gap-10">
+        <h1 class="text-6xl">About Us</h1>
+        <h2 class="text-4xl">The Team</h2>
+        <p class="text-xl mx-20 text-center">
+            We are a team of four student software developers at Bellevue College located in Bellevue, Washington. 
+            We specialize in a variety of skills such as React, Express, Node, SQL, and other industry standard skills.
+        </p>
+        <h2 class="text-4xl">The Concept</h2>
+        <p class="text-xl mx-20 text-center">
+            We wanted to focus on an issue that effects everyone: climate change. Our application serves to give people the 
+            power to understand how their power company is deriving its energy and the emissions that correspond to it.
+        </p>
+    </div>
 </body>
 </html>
