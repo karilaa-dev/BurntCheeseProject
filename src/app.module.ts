@@ -10,9 +10,10 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'public',),
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
     }),
-    ConfigModule.forRoot({isGlobal: true,}),
+    ConfigModule.forRoot({ isGlobal: true }),
     CarbonModule,
   ],
   controllers: [AppController, PagesController],
