@@ -8,37 +8,39 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <nav class="justify-between p-4">
-      <div class="flex gap-3 self-center">
-        <a href="/">Homepage</a>
-        <a href="/about">About</a>
+    <main>
+      <nav class="justify-between p-4">
+        <div class="flex gap-3 self-center">
+          <a href="/">Homepage</a>
+          <a href="/about">About</a>
+        </div>
+        <h1 class="text-lg nav-title self-center">Some Emissions</h1>
+        <form class="nav-search" action="">
+          <input
+            type="text"
+            placeholder="Enter an American city..."
+            class="bg-slate-300 placeholder-black p-2 rounded-3xl"
+          />
+        </form>
+      </nav>
+      <div class="flex flex-col items-center gap-10">
+        <h1 class="text-6xl">About Us</h1>
+        <h2 class="text-4xl">The Team</h2>
+        <p class="text-xl mx-20 text-center">
+          We are a team of four student software developers at Bellevue College
+          located in Bellevue, Washington. We specialize in a variety of skills
+          such as React, Express, Node, SQL, and other industry standard skills.
+        </p>
+        <h2 class="text-4xl">The Concept</h2>
+        <p class="text-xl mx-20 text-center">
+          We wanted to focus on an issue that effects everyone: climate change.
+          Our application serves to give people the power to understand how
+          their power company is deriving its energy and the emissions that
+          correspond to it.
+        </p>
       </div>
-      <h1 class="text-lg nav-title self-center">Some Emissions</h1>
-      <form class="nav-search" action="">
-        <input
-          type="text"
-          placeholder="Enter an American city..."
-          class="bg-slate-300 placeholder-black p-2 rounded-3xl"
-        />
-      </form>
-    </nav>
-    <div class="flex flex-col items-center gap-10">
-      <h1 class="text-6xl">About Us</h1>
-      <h2 class="text-4xl">The Team</h2>
-      <p class="text-xl mx-20 text-center">
-        We are a team of four student software developers at Bellevue College
-        located in Bellevue, Washington. We specialize in a variety of skills
-        such as React, Express, Node, SQL, and other industry standard skills.
-      </p>
-      <h2 class="text-4xl">The Concept</h2>
-      <p class="text-xl mx-20 text-center">
-        We wanted to focus on an issue that effects everyone: climate change.
-        Our application serves to give people the power to understand how their
-        power company is deriving its energy and the emissions that correspond
-        to it.
-      </p>
-    </div>
-    <footer class="fixed bottom-0 w-full text-center text-sm text-gray-500 p-4">
+    </main>
+    <footer class="w-full text-center text-sm text-gray-500 p-4">
       Made with love by Burnt Cheese
     </footer>
   </body>
