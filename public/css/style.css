@@ -1,5 +1,24 @@
-.nav-title {
+@media (min-width: 600px) {
+  nav {
+    display: flex;
+  }
+
+  .nav-title {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+  }
+
+  .nav-search {
+    grid-column: 1 / span 2;
+  }
 }
