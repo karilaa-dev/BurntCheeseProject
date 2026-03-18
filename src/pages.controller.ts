@@ -22,9 +22,7 @@ export class PagesController {
   }
 
   // not found
-  @Get('*') getNotFound(@Res() res: Response) {
-    res.sendFile(join(process.cwd(), 'public', 'html', 'not_found.html'));
-  }
-
-  
+  // @Get('*') getNotFound(@Res() res: Response) {
+  //   res.sendFile(join(process.cwd(), 'public', 'html', 'not_found.html'));
+  // }
 }
