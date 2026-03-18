@@ -7,6 +7,6 @@ import { HttpModule } from '@nestjs/axios';
   imports: [HttpModule],
   providers: [CarbonService],
   controllers: [CarbonController],
-  exports: [CarbonService]
+  exports: [CarbonService],
 })
 export class CarbonModule {}
