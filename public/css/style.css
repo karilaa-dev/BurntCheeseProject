@@ -8,6 +8,10 @@ main {
   flex: 1;
 }
 
+#data {
+  flex: 1;
+}
+
 @media (min-width: 600px) {
   nav {
     display: flex;

@@ -19,23 +19,62 @@
 
         function renderCity(city) {
             return `
-                <div>
-                    <div class='cityName'>
-                        <h1 class='text-4xl text-center'>${city.city}</h1>
-                        <h3 class='text-xl'>Current Information at a glance</h3>
-                    </div>
-                    <div class='scores flex m-4'>
-                        <div class='carbon-intensity'>
-                            <div class='bg-green-400 grow-0 rounded-xl w-full p-8 m-2 border'>
-                                <p class='text-2xl'>${city.carbonIntensity}</p>
-                                <p>gCO2e/kWh</p>
+                <div class='flex flex-col items-center px-4 py-8'>
+                    <h1 class='text-4xl font-bold text-center mb-6'>${city.city}</h1>
+
+                    <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl'>
+                        <h3 class='text-xl text-center mb-4'>Current Information At A Glance</h3>
+                        <div class='flex flex-wrap justify-center gap-4'>
+
+                            <div class='flex flex-col items-center'>
+                                <div class='bg-red-400 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-xs'>t of CO₂eq</p>
+                                </div>
+                                <p class='text-sm mt-1'>Carbon Emissions</p>
                             </div>
-                            <p class='text-xl text-center'>Carbon Intensity</p>
+
+                            <div class='flex flex-col items-center'>
+                                <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                    <p class='text-2xl font-bold'>${city.carbonIntensity}</p>
+                                    <p class='text-xs'>gCO₂eq/kWh</p>
+                                </div>
+                                <p class='text-sm mt-1'>Carbon Intensity</p>
+                            </div>
+
+                            <div class='flex flex-col items-center'>
+                                <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-xs'>%</p>
+                                </div>
+                                <p class='text-sm mt-1'>Carbon Free</p>
+                            </div>
+
+                            <div class='flex flex-col items-center'>
+                                <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-xs'>%</p>
+                                </div>
+                                <p class='text-sm mt-1'>Renewable</p>
+                            </div>
+
+                            <div class='flex flex-col items-center'>
+                                <div class='bg-yellow-300 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-xs'>GW</p>
+                                </div>
+                                <p class='text-sm mt-1'>Electricity Load</p>
+                            </div>
+
                         </div>
                     </div>
+
+                    <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl mt-6 text-center'>
+                        <h3 class='text-xl mb-2'>Top Sources of Power</h3>
+                        <p class='text-gray-500'>No data available</p>
+                    </div>
                 </div>
-                `
-            ;
+                `;
         }
     </script>
   </head>
