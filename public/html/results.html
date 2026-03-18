@@ -8,17 +8,59 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const query = params.get('city');
+      const params = new URLSearchParams(window.location.search);
+      const query = params.get('city');
 
-        fetch(`/api/carbonintensitydata?city=${query}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('data').innerHTML = renderCity(data)
-            });
+      fetch(`/api/allCityData?city=${encodeURIComponent(query)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById('data').innerHTML = renderCity(data);
+        })
+        .catch(() => {
+          document.getElementById('data').innerHTML =
+            '<p class="text-center text-red-500 mt-8">Error loading city data. Please try again.</p>';
+        });
 
-        function renderCity(city) {
-            return `
+      function capitalize(str) {
+        return str
+          .split(' ')
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+      }
+
+      const NO_DATA = `<p class='text-gray-500'>No data available</p>`;
+
+      function renderPowerSources(powerBreakdown) {
+        if (!powerBreakdown) return NO_DATA;
+        const sources = Object.entries(powerBreakdown)
+          .filter(([, mw]) => mw != null && mw > 0)
+          .sort((a, b) => b[1] - a[1]);
+        if (sources.length === 0) return NO_DATA;
+        const totalMw = sources.reduce((sum, [, mw]) => sum + mw, 0);
+        return sources
+          .map(([name, mw]) => {
+            const pct = ((mw / totalMw) * 100).toFixed(2);
+            return `<div class='flex justify-between bg-white rounded-lg px-4 py-2'>
+                    <span><strong>${capitalize(name)}</strong> - ${pct}%</span>
+                    <span class='text-gray-600'>${Math.round(mw)} MW</span>
+                </div>`;
+          })
+          .join('');
+      }
+
+      function safeRound(value, decimals) {
+        if (value == null) return 'N/A';
+        const factor = Math.pow(10, decimals);
+        return Math.round(value * factor) / factor;
+      }
+
+      function renderCity(city) {
+        const carbonIntensity = city.carbonIntensity ?? 'N/A';
+        const carbonFree = safeRound(city.carbonFreePercentage, 1);
+        const renewable = safeRound(city.renewablePercentage, 1);
+        const load = safeRound(city.totalLoad != null ? city.totalLoad / 1000 : null, 2);
+
+        return `
                 <div class='flex flex-col items-center px-4 py-8'>
                     <h1 class='text-4xl font-bold text-center mb-6'>${city.city}</h1>
 
@@ -27,16 +69,8 @@
                         <div class='flex flex-wrap justify-center gap-4'>
 
                             <div class='flex flex-col items-center'>
-                                <div class='bg-red-400 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
-                                    <p class='text-2xl font-bold'>N/A</p>
-                                    <p class='text-xs'>t of CO₂eq</p>
-                                </div>
-                                <p class='text-sm mt-1'>Carbon Emissions</p>
-                            </div>
-
-                            <div class='flex flex-col items-center'>
                                 <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
-                                    <p class='text-2xl font-bold'>${city.carbonIntensity}</p>
+                                    <p class='text-2xl font-bold'>${carbonIntensity}</p>
                                     <p class='text-xs'>gCO₂eq/kWh</p>
                                 </div>
                                 <p class='text-sm mt-1'>Carbon Intensity</p>
@@ -44,7 +78,7 @@
 
                             <div class='flex flex-col items-center'>
                                 <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
-                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-2xl font-bold'>${carbonFree}</p>
                                     <p class='text-xs'>%</p>
                                 </div>
                                 <p class='text-sm mt-1'>Carbon Free</p>
@@ -52,7 +86,7 @@
 
                             <div class='flex flex-col items-center'>
                                 <div class='bg-green-500 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
-                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-2xl font-bold'>${renewable}</p>
                                     <p class='text-xs'>%</p>
                                 </div>
                                 <p class='text-sm mt-1'>Renewable</p>
@@ -60,7 +94,7 @@
 
                             <div class='flex flex-col items-center'>
                                 <div class='bg-yellow-300 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
-                                    <p class='text-2xl font-bold'>N/A</p>
+                                    <p class='text-2xl font-bold'>${load}</p>
                                     <p class='text-xs'>GW</p>
                                 </div>
                                 <p class='text-sm mt-1'>Electricity Load</p>
@@ -69,13 +103,13 @@
                         </div>
                     </div>
 
-                    <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl mt-6 text-center'>
-                        <h3 class='text-xl mb-2'>Top Sources of Power</h3>
-                        <p class='text-gray-500'>No data available</p>
+                    <div class='bg-gray-100 rounded-2xl p-6 mt-6 text-center' style='width: 37rem'>
+                        <h3 class='text-xl font-bold mb-2'>Top Sources of Power</h3>
+                        <div class='flex flex-col gap-2 text-left'>${renderPowerSources(city.powerBreakdown)}</div>
                     </div>
                 </div>
                 `;
-        }
+      }
     </script>
   </head>
   <body>
@@ -94,7 +128,7 @@
         />
       </form>
     </nav>
-    <div id='data'>
+    <div id="data">
       <h1>Loading....</h1>
     </div>
     <footer class="w-full text-center text-sm text-gray-500 p-4">
