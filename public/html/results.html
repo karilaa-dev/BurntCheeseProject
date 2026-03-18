@@ -6,6 +6,38 @@
     <title>Results</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css" />
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('city');
+
+        fetch(`/api/carbonintensitydata?city=${query}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('data').innerHTML = renderCity(data)
+            });
+
+        function renderCity(city) {
+            return `
+                <div>
+                    <div class='cityName'>
+                        <h1 class='text-4xl text-center'>${city.city}</h1>
+                        <h3 class='text-xl'>Current Information at a glance</h3>
+                    </div>
+                    <div class='scores flex m-4'>
+                        <div class='carbon-intensity'>
+                            <div class='bg-green-400 grow-0 rounded-xl w-full p-8 m-2 border'>
+                                <p class='text-2xl'>${city.carbonIntensity}</p>
+                                <p>gCO2e/kWh</p>
+                            </div>
+                            <p class='text-xl text-center'>Carbon Intensity</p>
+                        </div>
+                    </div>
+                </div>
+                `
+            ;
+        }
+    </script>
   </head>
   <body>
     <nav class="justify-between p-4">
@@ -14,18 +46,17 @@
         <a href="/about">About</a>
       </div>
       <h1 class="text-lg nav-title self-center">Some Emissions</h1>
-      <form class="nav-search" action="">
+      <form class="nav-search" action="/results" method="GET">
         <input
           type="text"
+          name="city"
           placeholder="Enter an American city..."
           class="bg-slate-300 placeholder-black p-2 rounded-3xl"
         />
       </form>
     </nav>
-    <div
-      class="flex flex-col items-center gap-10 min-h-screen justify-center -mt-20"
-    >
-      <h1>Template</h1>
+    <div id='data'>
+      <h1>Loading....</h1>
     </div>
     <footer class="w-full text-center text-sm text-gray-500 p-4">
       Made with love by Burnt Cheese
