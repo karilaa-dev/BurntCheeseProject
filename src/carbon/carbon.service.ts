@@ -93,11 +93,81 @@ export class CarbonService {
         const carbon = await this.getAvgCarbonIntensity(location.latitude, location.longitude)
 
         return {
-            city: location.city, 
+            city: location.city,
             latitude: location.latitude,
             longitude: location.longitude,
             carbonIntensity: carbon
         }
+    }
+
+    private async fetchFromElectricityMaps(endpoint: string, lat: string, lon: string) {
+        const apiKey = this.configService.get<string>('ELECTRICITYMAPS_API_KEY');
+        if (!apiKey) throw new Error('ELECTRICITYMAPS_API_KEY is missing from .env');
+
+        const url = `https://api.electricitymaps.com/v3/${endpoint}?lat=${lat}&lon=${lon}`;
+        const response = await firstValueFrom(
+            this.httpsService.get(url, { headers: { 'auth-token': apiKey } })
+        );
+        return response.data;
+    }
+
+    async getLatestCarbonIntensity(lat: string, lon: string): Promise<number | null> {
+        const data = await this.fetchFromElectricityMaps('carbon-intensity/latest', lat, lon);
+        return data.carbonIntensity ?? null;
+    }
+
+    async getCarbonFreeEnergy(lat: string, lon: string): Promise<number | null> {
+        const data = await this.fetchFromElectricityMaps('carbon-free-energy/latest', lat, lon);
+        return data.value ?? null;
+    }
+
+    async getRenewableEnergy(lat: string, lon: string): Promise<number | null> {
+        const data = await this.fetchFromElectricityMaps('renewable-energy/latest', lat, lon);
+        return data.value ?? null;
+    }
+
+    async getTotalLoad(lat: string, lon: string): Promise<number | null> {
+        const data = await this.fetchFromElectricityMaps('total-load/latest', lat, lon);
+        return data.value ?? null;
+    }
+
+    async getElectricityMix(lat: string, lon: string): Promise<object | null> {
+        const data = await this.fetchFromElectricityMaps('electricity-mix/latest', lat, lon);
+        return data.data?.[0]?.mix ?? null;
+    }
+
+    async getAllCityData(city: string) {
+        const location = await this.getCoordinates(city);
+        const lat = location.latitude;
+        const lon = location.longitude;
+
+        const unwrap = <T>(r: PromiseSettledResult<T>) =>
+            r.status === 'fulfilled' ? (r.value ?? null) : null;
+
+        const [
+            carbonIntensityResult,
+            carbonFreeResult,
+            renewableResult,
+            totalLoadResult,
+            electricityMixResult,
+        ] = await Promise.allSettled([
+            this.getLatestCarbonIntensity(lat, lon),
+            this.getCarbonFreeEnergy(lat, lon),
+            this.getRenewableEnergy(lat, lon),
+            this.getTotalLoad(lat, lon),
+            this.getElectricityMix(lat, lon),
+        ]);
+
+        return {
+            city: location.city,
+            latitude: lat,
+            longitude: lon,
+            carbonIntensity: unwrap(carbonIntensityResult),
+            carbonFreePercentage: unwrap(carbonFreeResult),
+            renewablePercentage: unwrap(renewableResult),
+            totalLoad: unwrap(totalLoadResult),
+            powerBreakdown: unwrap(electricityMixResult),
+        };
     }
 
 }
