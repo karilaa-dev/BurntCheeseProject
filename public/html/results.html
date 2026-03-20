@@ -14,7 +14,8 @@
       fetch(`/api/allCityData?city=${encodeURIComponent(query)}`)
         .then((res) => res.json())
         .then((data) => {
-          document.getElementById('data').innerHTML = renderCity(data);
+          document.getElementById('data').innerHTML = 
+            data.city === undefined ? renderUnknown() : renderCity(data);
         })
         .catch(() => {
           document.getElementById('data').innerHTML =
@@ -76,6 +77,19 @@
         }
 
         return 'bg-gray-400';
+      }
+
+      function renderUnknown() {
+        return  `
+                  <div class='flex flex-col items-center px-4 py-8'>
+                    <h1 class='text-4xl font-bold text-center mb-6'>Unknown City</h1>
+                  
+                    <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl'>
+                      <h3 class='text-xl text-center mb-4'>The city you're looking for couldn't be found.</h3>
+                      <p class='text-sm text-center mt-1'>Please try again.</p>
+                    </div>
+                  </div>
+                `;
       }
 
       function renderCity(city) {
