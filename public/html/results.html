@@ -1,3 +1,6 @@
+<!-- Dylan was responsible for the overall HTML and CSS design -->
+<!-- Kyryl was responsible for fetching and displaying API logic -->
+<!-- Jesse was responsible for responsivity and accessibility -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -58,7 +61,7 @@
         if (value == null || value == 'N/A') return 'bg-gray-400';
 
         // carbon intensity metrics
-        if (type == 'intensity'){
+        if (type == 'intensity') {
           if (value <= 50) return 'bg-green-500';
           if (value <= 100) return 'bg-green-400';
           if (value <= 200) return 'bg-yellow-400';
@@ -67,7 +70,7 @@
         }
 
         // percentage metrics for carbon free and rebnewable energy
-        if (type == 'percentage'){
+        if (type == 'percentage') {
           if (value >= 80) return 'bg-green-500';
           if (value >= 60) return 'bg-green-400';
           if (value >= 40) return 'bg-yellow-400';
@@ -82,19 +85,28 @@
         const carbonIntensity = city.carbonIntensity ?? 'N/A';
         const carbonFree = safeRound(city.carbonFreePercentage, 1);
         const renewable = safeRound(city.renewablePercentage, 1);
-        const load = safeRound(city.totalLoad != null ? city.totalLoad / 1000 : null, 2);
+        const load = safeRound(
+          city.totalLoad != null ? city.totalLoad / 1000 : null,
+          2,
+        );
 
         // color variables
-        const carbonIntensityColor = getColorClass(carbonIntensity, 'intensity')
-        const carbonFreePercentageColor = getColorClass(carbonFree, 'percentage')
-        const renewableEnergyColor = getColorClass(renewable, 'percentage')
+        const carbonIntensityColor = getColorClass(
+          carbonIntensity,
+          'intensity',
+        );
+        const carbonFreePercentageColor = getColorClass(
+          carbonFree,
+          'percentage',
+        );
+        const renewableEnergyColor = getColorClass(renewable, 'percentage');
 
         return `
                 <div class='flex flex-col items-center px-4 py-8'>
                     <h1 class='text-4xl font-bold text-center mb-6'>${city.city}</h1>
 
                     <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl'>
-                        <h3 class='text-xl text-center mb-4'>Current Information At A Glance</h3>
+                        <h2 class='text-xl text-center mb-4'>Current Information At A Glance</h2>
                         <div class='flex flex-wrap justify-center gap-4'>
 
                             <div class='flex flex-col items-center'>
@@ -132,7 +144,7 @@
                         </div>
                     </div>
 
-                    <div class='bg-gray-100 rounded-2xl p-6 mt-6 text-center' style='width: 37rem'>
+                    <div class='bg-gray-100 rounded-2xl p-6 mt-6 text-center' style='max-width: 37rem; width: 100%;'>
                         <h3 class='text-xl font-bold mb-2'>Top Sources of Power</h3>
                         <div class='flex flex-col gap-2 text-left'>${renderPowerSources(city.powerBreakdown)}</div>
                     </div>
@@ -148,18 +160,19 @@
         <a href="/about">About</a>
       </div>
       <h1 class="text-lg nav-title self-center">Some Emissions</h1>
-      <form class="nav-search" action="/results" method="GET">
+      <form class="nav-search" action="/results" method="GET" role="search">
+        <label for="city" class="sr-only"> Enter a city </label>
         <input
-          type="text"
+          type="search"
           name="city"
-          placeholder="Enter an American city..."
+          placeholder="Enter a city..."
           class="bg-slate-300 placeholder-black p-2 rounded-3xl"
         />
       </form>
     </nav>
-    <div id="data">
+    <main id="data">
       <h1>Loading....</h1>
-    </div>
+    </main>
     <footer class="w-full text-center text-sm text-gray-500 p-4">
       Made with love by Burnt Cheese
     </footer>

@@ -1,7 +1,6 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import type { Response } from 'express';
 import { join } from 'path';
-import { NotFoundException } from '@nestjs/common';
 
 @Controller()
 export class PagesController {
@@ -20,9 +19,4 @@ export class PagesController {
   @Get('results') getResults(@Res() res: Response) {
     res.sendFile(join(process.cwd(), 'public', 'html', 'results.html'));
   }
-
-  // not found
-  // @Get('*') getNotFound(@Res() res: Response) {
-  //   res.sendFile(join(process.cwd(), 'public', 'html', 'not_found.html'));
-  // }
 }
