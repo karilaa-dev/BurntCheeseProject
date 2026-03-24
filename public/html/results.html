@@ -173,7 +173,8 @@
 
         return `
                 <div class='flex flex-col items-center px-4 py-8'>
-                    <h1 class='text-4xl font-bold text-center mb-6'>${city.city}</h1>
+                    <h1 class='text-4xl font-bold text-center mb-1'>${city.city.split(', ').slice(0, -1).join(', ')}</h1>
+                    <p class='text-lg text-gray-500 text-center mb-6'>${city.city.split(', ').slice(-1)[0]}</p>
 
                     <div class='bg-gray-100 rounded-2xl p-6 w-full max-w-4xl'>
                         <h2 class='text-xl text-center mb-4'>Current Information At A Glance</h2>
