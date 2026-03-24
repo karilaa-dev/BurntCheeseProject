@@ -17,19 +17,44 @@
       fetch(`/api/allCityData?city=${encodeURIComponent(query)}`)
         .then((res) => res.json())
         .then((data) => {
-          document.getElementById('data').innerHTML = renderCity(data);
+          if (data.error) {
+            document.getElementById('data').innerHTML = renderNotFound(data.query);
+            const input = document.querySelector('#data input[name="city"]');
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+          } else {
+            document.getElementById('data').innerHTML = renderCity(data);
 
-          setTimeout(() => {
-            document.querySelectorAll('.power-bar').forEach(bar => {
-              bar.style.width = bar.dataset.width + '%';
-            });
-          }, 100);
-          
+            setTimeout(() => {
+              document.querySelectorAll('.power-bar').forEach(bar => {
+                bar.style.width = bar.dataset.width + '%';
+              });
+            }, 100);
+          }
         })
         .catch(() => {
           document.getElementById('data').innerHTML =
             '<p class="text-center text-red-500 mt-8">Error loading city data. Please try again.</p>';
         });
+
+      function renderNotFound(searchQuery) {
+        return `
+          <div class='flex flex-col items-center px-4 py-16'>
+            <h1 class='text-3xl font-bold text-center mb-2'>We couldn't find '${searchQuery}'</h1>
+            <p class='text-gray-500 mb-6'>Try searching for a different city</p>
+            <form action='/results' method='GET' class='w-full max-w-md'>
+              <input
+                type='search'
+                name='city'
+                value='${searchQuery}'
+                class='w-full bg-slate-300 placeholder-black p-3 rounded-3xl text-center text-lg'
+                placeholder='Enter a city...'
+                autofocus
+              />
+            </form>
+          </div>
+        `;
+      }
 
       function capitalize(str) {
         return str
