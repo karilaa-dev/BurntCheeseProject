@@ -18,6 +18,13 @@
         .then((res) => res.json())
         .then((data) => {
           document.getElementById('data').innerHTML = renderCity(data);
+
+          setTimeout(() => {
+            document.querySelectorAll('.power-bar').forEach(bar => {
+              bar.style.width = bar.dataset.width + '%';
+            });
+          }, 100);
+          
         })
         .catch(() => {
           document.getElementById('data').innerHTML =
@@ -53,8 +60,9 @@
 
         <div class='w-full bg-gray-200 rounded-full h-3 overflow-hidden'>
           <div 
-            class='h-3 bg-[${getElectricityColor(name)}] transition-all duration-700 ease-out'
-            style='width: ${pct}%'>
+            class='h-3 bg-[${getElectricityColor(name)}] transition-all duration-1000 ease-out power-bar'
+            data-width='${pct}'
+            style='width: 0%'>
           </div>
         </div>
 
