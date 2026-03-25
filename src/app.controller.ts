@@ -62,6 +62,10 @@ export class AppController {
 
   @Get('allCityData')
   async getAllCityData(@Query('city') city: string) {
-    return this.carbonService.getAllCityData(city);
+    try {
+      return await this.carbonService.getAllCityData(city);
+    } catch {
+      return { error: true, message: 'City not found', query: city };
+    }
   }
 }
