@@ -83,20 +83,20 @@
 
         // carbon intensity metrics
         if (type == 'intensity') {
-          if (value <= 50) return 'bg-green-500';
-          if (value <= 100) return 'bg-green-400';
-          if (value <= 200) return 'bg-yellow-400';
-          if (value <= 300) return 'bg-orange-500';
-          return 'bg-red-500';
+          if (value <= 50) return 'bg-lime-200 text-black';
+          if (value <= 100) return 'bg-yellow-200 text-black';
+          if (value <= 200) return 'bg-amber-400 text-white';
+          if (value <= 300) return 'bg-red-800 text-white';
+          return 'bg-red-950 text-white';
         }
 
         // percentage metrics for carbon free and rebnewable energy
         if (type == 'percentage') {
-          if (value >= 80) return 'bg-green-500';
-          if (value >= 60) return 'bg-green-400';
-          if (value >= 40) return 'bg-yellow-400';
-          if (value >= 30) return 'bg-orange-500';
-          return 'bg-red-500';
+          if (value >= 80) return 'bg-lime-200 text-black';
+          if (value >= 60) return 'bg-yellow-200 text-black';
+          if (value >= 40) return 'bg-amber-400 text-white';
+          if (value >= 30) return 'bg-red-800 text-white';
+          return 'bg-red-950 text-white';
         }
 
         return 'bg-gray-400';
@@ -155,7 +155,7 @@
                         <div class='flex flex-wrap justify-center gap-4'>
 
                             <div class='flex flex-col items-center'>
-                                <div class='${carbonIntensityColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                <div class='${carbonIntensityColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center'>
                                     <p class='text-2xl font-bold'>${carbonIntensity}</p>
                                     <p class='text-xs'>gCO₂eq/kWh</p>
                                 </div>
@@ -163,7 +163,7 @@
                             </div>
 
                             <div class='flex flex-col items-center'>
-                                <div class='${carbonFreePercentageColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                <div class='${carbonFreePercentageColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center'>
                                     <p class='text-2xl font-bold'>${carbonFree}</p>
                                     <p class='text-xs'>%</p>
                                 </div>
@@ -171,7 +171,7 @@
                             </div>
 
                             <div class='flex flex-col items-center'>
-                                <div class='${renewableEnergyColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                <div class='${renewableEnergyColor} rounded-xl w-24 h-24 flex flex-col items-center justify-center '>
                                     <p class='text-2xl font-bold'>${renewable}</p>
                                     <p class='text-xs'>%</p>
                                 </div>
@@ -179,7 +179,7 @@
                             </div>
 
                             <div class='flex flex-col items-center'>
-                                <div class='bg-yellow-300 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
+                                <div class='bg-amber-400 rounded-xl w-24 h-24 flex flex-col items-center justify-center text-white'>
                                     <p class='text-2xl font-bold'>${load}</p>
                                     <p class='text-xs'>GW</p>
                                 </div>
@@ -213,6 +213,7 @@
           placeholder="Enter a city..."
           class="bg-slate-300 placeholder-black p-2 rounded-3xl"
         />
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Search</button>
       </form>
     </nav>
     <main id="data">
