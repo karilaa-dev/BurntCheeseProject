@@ -19,6 +19,7 @@
         .then((data) => {
           if (data.error) {
             document.getElementById('data').innerHTML = renderNotFound(data.query);
+            document.querySelector('.nav-search').style.display = 'none';
             const input = document.querySelector('#data input[name="city"]');
             input.focus();
             input.setSelectionRange(input.value.length, input.value.length);
