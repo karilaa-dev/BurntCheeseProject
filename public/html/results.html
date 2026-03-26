@@ -42,15 +42,16 @@
           <div class='flex flex-col items-center px-4 py-16'>
             <h1 class='text-3xl font-bold text-center mb-2'>We couldn't find '${searchQuery}'</h1>
             <p class='text-gray-500 mb-6'>Try searching for a different city</p>
-            <form action='/results' method='GET' class='w-full max-w-md'>
+            <form action='/results' method='GET' class='w-full max-w-md flex gap-2'>
               <input
                 type='search'
                 name='city'
                 value='${searchQuery}'
-                class='w-full bg-slate-300 placeholder-black p-3 rounded-3xl text-center text-lg'
+                class='flex-1 bg-slate-300 placeholder-black p-3 rounded-3xl text-center text-lg'
                 placeholder='Enter a city...'
                 autofocus
               />
+              <button type='submit' class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'>Search</button>
             </form>
           </div>
         `;
